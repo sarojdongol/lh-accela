@@ -11,5 +11,5 @@ variable "circleci_project_id" {
 variable "thumbprints" {
   type        = list(string)
   description = "The OIDC thumbprints used for the OIDC provider (default)"
-  default     = ["9e99a48a9960b14926bb7f3b02e22da2b0ab7280"]
+  default     = ["06B25927C42A721631C1EFD9431E648FA62E1E39"]
 }
