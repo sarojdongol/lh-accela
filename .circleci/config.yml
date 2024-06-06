@@ -19,10 +19,6 @@ jobs:
           account_id: ${AWS_ACCOUNT_ID}
       - aws-ecr/build_image:
           push_image: false
-      - aws-ecr/push_image:
-          account_id: ${AWS_ACCOUNT_ID}
-          repo: my-repo
-          tag: ${CIRCLE_SHA1},latest
 workflows:
   docker:
     jobs:
