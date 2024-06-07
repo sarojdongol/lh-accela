@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@4.1.1
+  terraform: circleci/terraform@3.2.1
 
 jobs:
   build-push:
@@ -13,7 +14,22 @@ jobs:
     steps:
       - checkout
       - aws-cli/setup:
-          role_arn: "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CircleCI_OIDC"
+          role_arn: "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CircleCI_OIDC
+      - terraform/fmt:
+          checkout: true
+          context: terraform
+      - terraform/validate:
+          checkout: true
+          context: terraform
+          requires:
+            - terraform/fmt
+      - terraform/plan:
+          checkout: true
+          context: terraform
+          persist-workspace: true
+          requires:
+            - terraform/validate
+
 workflows:
   docker:
     jobs:
