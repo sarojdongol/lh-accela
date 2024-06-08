@@ -42,6 +42,6 @@ workflows:
           type: approval
           requires:
             - build-push
-      - deploy:
+      - deploy-prod:
           requires:
             - hold
