@@ -21,13 +21,13 @@ jobs:
       - aws-cli/setup:
           role_arn: "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CircleCI_OIDC"
       - terraform/init:
-          path: .
+          path: ~/lh-accela/modules/oidc_setup
       - terraform/validate:
-          path: .
+          path: ~/lh-accela/modules/oidc_setup
       - terraform/fmt:
-          path: .
+          path: ~/lh-accela/modules/oidc_setup
       - terraform/plan:
-          path: .
+          path: ~/lh-accela/modules/oidc_setup
     working_directory: ~/lh-accela/modules/oidc_setup
 
 workflows:
