@@ -30,7 +30,7 @@ jobs:
     working_directory: ~/lh-accela/modules/oidc_setup
 
 workflows:
-  docker:
+  core_infra:
     jobs:
       - build-push:
           workspace: "default"
