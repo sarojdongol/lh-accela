@@ -6,6 +6,9 @@ orbs:
 
 jobs:
   build-push:
+    parameters:
+      workspace:
+        type: string
     environment:
       AWS_REGION: ap-southeast-2
       AWS_ACCOUNT_ID: 058264290985
@@ -13,6 +16,7 @@ jobs:
       - image: cimg/aws:2022.06
     steps:
       - checkout
+      - echo "workspace: ${parameters.workspace}"
       - aws-cli/setup:
           role_arn: "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CircleCI_OIDC"
       - terraform/init:
@@ -28,4 +32,5 @@ jobs:
 workflows:
   docker:
     jobs:
-      - build-push
+      - build-push:
+          workspace: "default"
