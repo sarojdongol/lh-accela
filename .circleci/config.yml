@@ -16,8 +16,7 @@ jobs:
       - image: cimg/aws:2022.06
     steps:
       - checkout
-      - directory:
-            run: pwd
+      - run: pwd
       - aws-cli/setup:
           role_arn: "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CircleCI_OIDC"
       - terraform/init:
