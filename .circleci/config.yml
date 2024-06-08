@@ -28,9 +28,20 @@ jobs:
       - terraform/plan:
           path: modules/oidc_setup
     working_directory: ~/lh-accela/
-
+  deploy-prod:
+    docker:
+      - image: cimg/aws:2022.06
+    steps:
+      - run: echo "Deploy to production"
 workflows:
   core_infra:
     jobs:
       - build-push:
           workspace: "default"
+      - hold:
+          type: approval
+          requires:
+            - build-push
+      - deploy:
+          requires:
+            - hold
