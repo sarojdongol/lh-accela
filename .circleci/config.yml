@@ -25,7 +25,6 @@ jobs:
       - terraform/init:
           path: modules/oidc_setup
           backend: true
-          terraform_version: 1.8.5
           backend_config:
            "backend=s3, \
            bucket=<<parameters.tf_state_bucket_name>>, \
