@@ -31,16 +31,45 @@ jobs:
            region=us-east-1"
       - terraform/validate:
           path: modules/oidc_setup
+          backend: true
+          backend_config:
+           "bucket=<<parameters.tf_state_bucket_name>>, \
+           key=<<parameters.tf_state_key_path>>, \
+           region=us-east-1"
       - terraform/fmt:
           path: modules/oidc_setup
+          backend: true
+          backend_config:
+           "bucket=<<parameters.tf_state_bucket_name>>, \
+           key=<<parameters.tf_state_key_path>>, \
+           region=us-east-1"
       - terraform/plan:
           path: modules/oidc_setup
+          backend: true
+          backend_config:
+           "bucket=<<parameters.tf_state_bucket_name>>, \
+           key=<<parameters.tf_state_key_path>>, \
+           region=us-east-1"
     working_directory: ~/lh-accela/
   deploy-stg:
     docker:
       - image: cimg/aws:2022.06
     steps:
-      - run: echo "Deploy to production"
+      - run: echo "Deploy to stg"
+      - terraform/plan:
+          path: modules/oidc_setup
+          backend: true
+          backend_config:
+           "bucket=<<parameters.tf_state_bucket_name>>, \
+           key=<<parameters.tf_state_key_path>>, \
+           region=us-east-1"
+      - terraform/apply:
+          path: modules/oidc_setup
+          backend: true
+          backend_config:
+           "bucket=<<parameters.tf_state_bucket_name>>, \
+           key=<<parameters.tf_state_key_path>>, \
+           region=us-east-1"
 workflows:
   core_infra:
     jobs:
