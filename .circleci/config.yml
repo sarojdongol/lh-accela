@@ -26,8 +26,7 @@ jobs:
           path: modules/oidc_setup
           backend: true
           backend_config:
-           "backend=s3, \
-           bucket=<<parameters.tf_state_bucket_name>>, \
+           "bucket=<<parameters.tf_state_bucket_name>>, \
            key=<<parameters.tf_state_key_path>>, \
            region=ap-southeast-2"
       - terraform/validate:
