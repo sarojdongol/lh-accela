@@ -9,6 +9,10 @@ jobs:
     parameters:
       workspace:
         type: string
+      tf_state_bucket_name:
+        type: string
+      tf_state_key_path:
+        type: string
     environment:
       AWS_REGION: ap-southeast-2
       AWS_ACCOUNT_ID: 058264290985
@@ -16,11 +20,14 @@ jobs:
       - image: cimg/aws:2022.06
     steps:
       - checkout
-      - run: pwd
       - aws-cli/setup:
           role_arn: "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CircleCI_OIDC"
       - terraform/init:
           path: modules/oidc_setup
+          backend_config:
+           "bucket=${parameters.tf_state_bucket_name}, \
+           key=${parameters.tf_state_key_path}, \
+           region=ap-southeast-2"
       - terraform/validate:
           path: modules/oidc_setup
       - terraform/fmt:
@@ -28,7 +35,7 @@ jobs:
       - terraform/plan:
           path: modules/oidc_setup
     working_directory: ~/lh-accela/
-  deploy-prod:
+  deploy-stg:
     docker:
       - image: cimg/aws:2022.06
     steps:
@@ -38,10 +45,12 @@ workflows:
     jobs:
       - build-push:
           workspace: "default"
+          tf_state_bucket_name: "aops-edp-artefacts"
+          tf_state_key_path: "oidc_setup/terraform.tfstate"
       - hold:
           type: approval
           requires:
             - build-push
-      - deploy-prod:
+      - deploy-stg:
           requires:
             - hold
