@@ -24,32 +24,12 @@ jobs:
           role_arn: "arn:aws:iam::${AWS_ACCOUNT_ID}:role/CircleCI_OIDC"
       - terraform/init:
           path: modules/oidc_setup
-          backend: true
-          backend_config:
-           "bucket=<<parameters.tf_state_bucket_name>>, \
-           key=<<parameters.tf_state_key_path>>, \
-           region=us-east-1"
       - terraform/validate:
           path: modules/oidc_setup
-          backend: true
-          backend_config:
-           "bucket=<<parameters.tf_state_bucket_name>>, \
-           key=<<parameters.tf_state_key_path>>, \
-           region=us-east-1"
       - terraform/fmt:
           path: modules/oidc_setup
-          backend: true
-          backend_config:
-           "bucket=<<parameters.tf_state_bucket_name>>, \
-           key=<<parameters.tf_state_key_path>>, \
-           region=us-east-1"
       - terraform/plan:
           path: modules/oidc_setup
-          backend: true
-          backend_config:
-           "bucket=<<parameters.tf_state_bucket_name>>, \
-           key=<<parameters.tf_state_key_path>>, \
-           region=us-east-1"
     working_directory: ~/lh-accela/
   deploy-stg:
     docker:
@@ -77,10 +57,3 @@ workflows:
           workspace: "default"
           tf_state_bucket_name: "aops-edp-artefacts"
           tf_state_key_path: "oidc_setup/terraform.tfstate"
-      - hold:
-          type: approval
-          requires:
-            - build-push
-      - deploy-stg:
-          requires:
-            - hold
